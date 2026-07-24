@@ -16,7 +16,7 @@ public class Artista {
     @Column(unique = true)
     private String nome;
 
-    @OneToMany(mappedBy = "artista" ,  cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "artista" ,  cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Musica> musicas = new ArrayList<>();
 
     public Artista() {}
