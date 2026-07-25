@@ -18,15 +18,30 @@ public class ArtistaController {
         this.artistaService = artistaService;
     }
 
-    @PostMapping
-    public ResponseEntity<ArtistaDTO> createArtista(@RequestBody ArtistaDTO artistaDTO){
-            return ResponseEntity.status(HttpStatus.CREATED).body(artistaService.createArtista(artistaDTO));
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistaDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok(artistaService.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<ArtistaDTO>> getArtista(){
-        return ResponseEntity.ok(artistaService.getArtistas());
+    public ResponseEntity<List<ArtistaDTO>> findAllArtistas(){
+        return ResponseEntity.ok(artistaService.findAllArtistas());
     }
 
+    @PostMapping
+    public ResponseEntity<ArtistaDTO> createArtista(@RequestBody ArtistaDTO artistaDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(artistaService.createArtista(artistaDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ArtistaDTO> deleteArtista(@PathVariable Long id){
+        artistaService.deleteArtistaById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/resumo")
+    public ResponseEntity<String> getResumoArtista(@PathVariable Long id){
+        return ResponseEntity.ok().body(artistaService.getResumoArtista(id));
+    }
 
 }
