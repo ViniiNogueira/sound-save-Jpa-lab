@@ -7,13 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ArtistaRepository extends JpaRepository<Artista , Long> {
 
-    Optional<Artista> findByNomeContainingIgnoreCase(String nome);
+    List<Artista> findByNomeContainingIgnoreCase(String nome);
 
     @Query("SELECT m FROM Artista a JOIN a.musicas m WHERE LOWER(a.nome) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<Musica> buscaMusicasPorArtista(@Param("name") String nome);
-
+    List<Musica> findMusicaByArtista(@Param("name") String nome);
 }

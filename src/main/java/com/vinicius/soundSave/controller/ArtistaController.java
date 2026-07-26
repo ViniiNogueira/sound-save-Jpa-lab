@@ -44,4 +44,9 @@ public class ArtistaController {
         return ResponseEntity.ok().body(artistaService.getResumoArtista(id));
     }
 
+    @GetMapping("/busca")
+    public ResponseEntity<List<ArtistaDTO>> findByNome(@RequestParam String nome) {
+        return ResponseEntity.ok(artistaService.findByNome(nome));
+    }
+
 }

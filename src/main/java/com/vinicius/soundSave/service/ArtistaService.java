@@ -48,6 +48,14 @@ public class ArtistaService {
         return toArtistaDTO(artista);
     }
 
+//  findByNome
+    public List<ArtistaDTO> findByNome(String nome){
+        return artistaRepository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(this::toArtistaDTO)
+                .collect(Collectors.toList());
+    }
+
 //    Delete
     public void deleteArtistaById(Long id){
         if (artistaRepository.findById(id).isPresent()) {
@@ -65,7 +73,6 @@ public class ArtistaService {
                 .stream()
                 .map(Musica::getTitulo)
                 .collect(Collectors.joining(", "));
-
 
         return groqIAService.obterResumo(artista.getNome() , musicas);
     }

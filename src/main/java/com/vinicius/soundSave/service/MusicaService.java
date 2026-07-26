@@ -40,6 +40,13 @@ public class MusicaService {
          return toMusicaDTO(musica);
     }
 
+    //    busca musicas por artista
+    public List<MusicaDTO> findMusicasByArtista(String nome ){
+        return artistaRepository.findMusicaByArtista(nome)
+                .stream().map(this::toMusicaDTO)
+                .collect(Collectors.toList());
+    }
+
 //    create
     public MusicaDTO createMusica(MusicaDTO musicaDTO) {
         Artista artista = artistaRepository.findById(musicaDTO.artistaId())
@@ -53,7 +60,6 @@ public class MusicaService {
 
 //    Delete
     public void deleteMusica(Long id) {
-
         if (!musicaRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, " musica nao encontrado, id: " + id );
         } else {

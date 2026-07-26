@@ -31,6 +31,11 @@ public class MusicaController {
         return ResponseEntity.ok().body(musicaService.findById(id));
     }
 
+    @GetMapping("/busca")
+    public ResponseEntity<List<MusicaDTO>> findAllByArtista(@RequestParam String nome) {
+        return ResponseEntity.ok(musicaService.findMusicasByArtista(nome));
+    }
+
 //    post
     @PostMapping
     public ResponseEntity<MusicaDTO> createMusica(@RequestBody MusicaDTO musicaDTO) {
@@ -40,7 +45,8 @@ public class MusicaController {
 
 //    Delete
     @DeleteMapping("/{id}")
-    public void deleteMusica(@PathVariable Long id) {
+    public ResponseEntity<MusicaDTO> deleteMusica(@PathVariable Long id) {
         musicaService.deleteMusica(id);
+        return ResponseEntity.noContent().build();
     }
 }

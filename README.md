@@ -7,6 +7,7 @@ API REST para cadastro de artistas e musicas, desenvolvida em Java com Spring Bo
 - Cadastrar artistas
 - Listar artistas
 - Buscar artista por ID
+- Buscar artista por nome
 - Remover artista
 - Cadastrar musicas vinculadas a um artista
 - Listar musicas
@@ -85,13 +86,14 @@ http://localhost:8080/swagger-ui/index.html
 
 ### Artistas
 
-| Metodo | Rota | Descricao |
-| --- | --- | --- |
-| `GET` | `/artistas` | Lista todos os artistas |
-| `GET` | `/artistas/{id}` | Busca um artista por ID |
-| `POST` | `/artistas` | Cadastra um artista |
-| `DELETE` | `/artistas/{id}` | Remove um artista |
+| Metodo | Rota                   | Descricao                          |
+| --- |------------------------|------------------------------------|
+| `GET` | `/artistas`            | Lista todos os artistas            |
+| `GET` | `/artistas/{id}`       | Busca um artista por ID            |
+| `POST` | `/artistas`            | Cadastra um artista                |
+| `DELETE` | `/artistas/{id}`       | Remove um artista                  |
 | `GET` | `/artistas/{id}/resumo` | Gera um resumo do artista usando IA |
+| `GET` | `/artistas/busca`      | busca artista por nome semelhante  |
 
 Exemplo de cadastro de artista:
 
