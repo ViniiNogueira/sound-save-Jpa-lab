@@ -1,64 +1,153 @@
-# SoundSave 🎵
+# SoundSave
 
-Projeto de estudo em **Java + Spring Boot**, desenvolvido durante a trilha "Carreira em Desenvolvimento Back-End Java" da Alura. O objetivo foi praticar persistência de dados com **Spring Data JPA** (relacionamentos entre entidades) e consumo de uma **API externa de IA** para gerar informações sobre artistas.
+API REST para cadastro de artistas e musicas, desenvolvida em Java com Spring Boot. O projeto nasceu como uma aplicacao de terminal durante estudos de Java e Spring Data JPA, e foi evoluido para uma API Web com controllers, services, DTOs, persistencia em PostgreSQL e integracao com IA para gerar resumos sobre artistas.
 
-## 💡 Sobre o projeto
+## Funcionalidades
 
-O SoundSave simula um pequeno catálogo de músicas e artistas. Cada artista pode ter várias músicas associadas, e o sistema usa uma LLM (via API compatível com a OpenAI) para gerar um resumo textual sobre um artista específico.
+- Cadastrar artistas
+- Listar artistas
+- Buscar artista por ID
+- Remover artista
+- Cadastrar musicas vinculadas a um artista
+- Listar musicas
+- Buscar musica por ID
+- Remover musica
+- Gerar resumo de artista usando IA via Groq/OpenAI SDK
+- Visualizar a documentacao da API com Swagger UI
 
-Ao rodar a aplicação, o próprio `CommandLineRunner`:
-1. Cadastra alguns artistas e músicas de exemplo no banco;
-2. Lista todas as músicas com seus respectivos artistas;
-3. Faz uma chamada à API da Groq pedindo um resumo sobre um dos artistas cadastrados.
-
-## 🛠️ Tecnologias utilizadas
+## Tecnologias
 
 - Java 21
-- Spring Boot 4.0.7
-- Spring Data JPA / Hibernate
+- Spring Boot 4
+- Spring Web MVC
+- Spring Data JPA
 - PostgreSQL
-- [OpenAI Java SDK](https://github.com/openai/openai-java) apontando para a API da [Groq](https://groq.com/) (modelo `llama-3.3-70b-versatile`)
+- OpenAI Java SDK configurado para a API da Groq
+- Springdoc OpenAPI / Swagger UI
 - Maven
 
-## 📁 Estrutura do projeto
+## Estrutura
 
-```
+```text
 src/main/java/com/vinicius/soundSave/
-├── application/
-│   └── Program.java          # Lógica de inicialização e demonstração
-├── model/
-│   ├── Artista.java           # Entidade Artista (1:N com Música)
-│   └── Musica.java            # Entidade Música (N:1 com Artista)
-├── repository/
-│   ├── ArtistaRepository.java # Busca por nome e músicas por artista
-│   └── MusicaRepository.java
-└── service/
-    └── GroqIAService.java     # Integração com a API da Groq
+|-- controller/
+|   |-- ArtistaController.java
+|   `-- MusicaController.java
+|-- dto/
+|   |-- ArtistaDTO.java
+|   `-- MusicaDTO.java
+|-- model/
+|   |-- Artista.java
+|   `-- Musica.java
+|-- repository/
+|   |-- ArtistaRepository.java
+|   `-- MusicaRepository.java
+|-- service/
+|   |-- ArtistaService.java
+|   |-- GroqIAService.java
+|   `-- MusicaService.java
+`-- SoundSaveApplication.java
 ```
 
-## ⚙️ Como rodar
+## Como Rodar
 
-O projeto precisa das seguintes variáveis de ambiente:
+Configure as variaveis de ambiente:
 
-| Variável | Descrição |
-|---|---|
-| `DB_HOST` | Host do banco PostgreSQL |
+| Variavel | Descricao |
+| --- | --- |
+| `DB_HOST` | Host do PostgreSQL. Exemplo: `localhost` |
 | `DB_NAME` | Nome do banco de dados |
-| `DB_USER` | Usuário do banco |
+| `DB_USER` | Usuario do banco |
 | `DB_PASSWORD` | Senha do banco |
-| `GROQ_API_KEY` | Chave de API da Groq (para o resumo de artistas) |
+| `GROQ_API_KEY` | Chave da API da Groq para gerar resumos com IA |
 
-Com o banco criado e as variáveis configuradas, basta rodar:
+Depois execute:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-> ⚠️ O projeto usa `spring.jpa.hibernate.ddl-auto=create`, ou seja, o schema é recriado a cada execução — os dados de exemplo cadastrados no `Program.java` também serão inseridos novamente.
+No Windows:
 
-## O que foi praticado
+```powershell
+.\mvnw.cmd spring-boot:run
+```
 
-- Modelagem de relacionamento `@OneToMany` / `@ManyToOne` com JPA
-- Consultas customizadas com `@Query` (JPQL)
-- Consumo de uma API HTTP externa a partir de um serviço Java
+## Swagger
 
+Com a aplicacao rodando, acesse:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+## Endpoints
+
+### Artistas
+
+| Metodo | Rota | Descricao |
+| --- | --- | --- |
+| `GET` | `/artistas` | Lista todos os artistas |
+| `GET` | `/artistas/{id}` | Busca um artista por ID |
+| `POST` | `/artistas` | Cadastra um artista |
+| `DELETE` | `/artistas/{id}` | Remove um artista |
+| `GET` | `/artistas/{id}/resumo` | Gera um resumo do artista usando IA |
+
+Exemplo de cadastro de artista:
+
+```json
+{
+  "nome": "Bad Bunny"
+}
+```
+
+### Musicas
+
+| Metodo | Rota | Descricao |
+| --- | --- | --- |
+| `GET` | `/musicas` | Lista todas as musicas |
+| `GET` | `/musicas/{id}` | Busca uma musica por ID |
+| `POST` | `/musicas` | Cadastra uma musica vinculada a um artista |
+| `DELETE` | `/musicas/{id}` | Remove uma musica |
+
+Exemplo de cadastro de musica:
+
+```json
+{
+  "titulo": "Titi Me Pregunto",
+  "artistaId": 1
+}
+```
+
+O campo `artistaId` deve ser o ID de um artista ja cadastrado.
+
+## Banco De Dados
+
+O projeto usa PostgreSQL e Spring Data JPA. A configuracao principal esta em `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:postgresql://${DB_HOST}/${DB_NAME}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
+spring.jpa.hibernate.ddl-auto=update
+```
+
+## IA
+
+O endpoint `GET /artistas/{id}/resumo` busca o artista no banco, coleta o nome e as musicas cadastradas, e envia esse contexto para a IA gerar um resumo em portugues.
+
+A integracao usa o OpenAI Java SDK apontando para a API da Groq:
+
+```text
+https://api.groq.com/openai/v1
+```
+
+## Status Do Projeto
+
+Projeto em desenvolvimento e estudo. Proximos pontos de melhoria:
+
+- Adicionar validacoes com Bean Validation
+- Criar tratamento global de excecoes
+- Adicionar testes para controllers e services
+- Melhorar configuracao da chave da IA
+- Padronizar respostas de erro da API
