@@ -12,6 +12,7 @@ API REST para cadastro de artistas e musicas, desenvolvida em Java com Spring Bo
 - Cadastrar musicas vinculadas a um artista
 - Listar musicas
 - Buscar musica por ID
+- Buscar musica pelo nome do artista
 - Remover musica
 - Gerar resumo de artista usando IA via Groq/OpenAI SDK
 - Visualizar a documentacao da API com Swagger UI
@@ -109,8 +110,10 @@ Exemplo de cadastro de artista:
 | --- | --- | --- |
 | `GET` | `/musicas` | Lista todas as musicas |
 | `GET` | `/musicas/{id}` | Busca uma musica por ID |
+| `GET` | `/musicas/busca`      | busca musicas de um artista  |
 | `POST` | `/musicas` | Cadastra uma musica vinculada a um artista |
 | `DELETE` | `/musicas/{id}` | Remove uma musica |
+
 
 Exemplo de cadastro de musica:
 
